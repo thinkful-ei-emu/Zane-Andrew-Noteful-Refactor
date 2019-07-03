@@ -44,7 +44,7 @@ class App extends React.Component {
   }
 
   addFolder = async (folder) => {
-    await fetch(`${foldersURL}`,{
+    await fetch(`${foldersURL}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

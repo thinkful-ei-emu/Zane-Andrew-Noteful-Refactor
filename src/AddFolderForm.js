@@ -7,7 +7,7 @@ class AddFolderForm extends React.Component {
 
   addFolderSubmit = (e) => {
     e.preventDefault();
-    
+
     const folderName = document.getElementById('folder-name');
     const { addFolder } = this.context;
 
