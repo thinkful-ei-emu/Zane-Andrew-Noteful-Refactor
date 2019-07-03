@@ -12,14 +12,16 @@ import Sidebar from './Sidebar';
 import NotFound from './Not-Found';
 import { SidebarContext } from './Contexts/SidebarContext';
 import { PageContext } from './Contexts/PageContext';
-
+const notesURL='http://localhost:9090/notes';
+const foldersURL='http://localhost:9090/folders';
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       folders: [],
       notes: [],
-      currentFolder: ''
+      currentFolder: '',
+      
     };
   }
 
@@ -41,9 +43,19 @@ class App extends React.Component {
     });
   }
 
+  deleteNote=(noteId)=>{
+    this.setState(
+      {notes:this.state.notes.filter(note=>note.id!==noteId)}      
+    )
+    fetch(`${notesURL}/${noteId}`,{
+      method:'DELETE',
+      
+    })
+  }
+
   async componentDidMount() {
-    let folderResponse = fetch('http://localhost:9090/folders');
-    let noteResponse = fetch('http://localhost:9090/notes');
+    let folderResponse = fetch(foldersURL);
+    let noteResponse = fetch(notesURL);
 
     [folderResponse, noteResponse] = await Promise.all([folderResponse, noteResponse]);
     const [folders, notes] = await Promise.all([folderResponse.json(), noteResponse.json()]);
@@ -80,7 +92,8 @@ class App extends React.Component {
 
         <SidebarContext.Provider value={{
           folders: this.state.folders,
-          setCurrentFolder: this.setCurrentFolder
+          setCurrentFolder: this.setCurrentFolder,
+          
         }}>
           <Sidebar>
             <Switch>
@@ -99,6 +112,7 @@ class App extends React.Component {
 
         <PageContext.Provider value={{
           notes: this.state.notes,
+          deleteNote:this.deleteNote
         }}>
           <Main>
             <Switch>

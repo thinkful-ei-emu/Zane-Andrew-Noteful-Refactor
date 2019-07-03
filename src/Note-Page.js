@@ -7,7 +7,7 @@ class NotePage extends React.Component {
 
   render() {
 
-    const { notes } = this.context;
+    const { notes,deleteNote } = this.context;
 
     const noteId = this.props.match.params.noteId;
     const note = notes.find(note => note.id === noteId);
@@ -23,7 +23,8 @@ class NotePage extends React.Component {
               <p>
                 {new Date(note.modified).toLocaleDateString()}
               </p>
-              <button>Delete Note</button>
+              <button onClick={()=>{document.getElementById('back-button').click()
+                deleteNote(noteId)}}>Delete Note</button>
             </header>
             <p>
               {note.content}
