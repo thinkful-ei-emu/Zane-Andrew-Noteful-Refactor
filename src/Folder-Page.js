@@ -27,9 +27,7 @@ class FolderPage extends React.Component {
       );
     });
     return <div>
-      <Link to={`/folder/${folderId}/add-note`}>
-        <button>Add Note</button>
-      </Link>
+      
       {notes.length ? mappedNotes : 'Nothing was Found.'}
     </div>;
   }

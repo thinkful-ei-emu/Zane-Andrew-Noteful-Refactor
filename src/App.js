@@ -38,9 +38,15 @@ class App extends React.Component {
   }
 
   addNote = (note) => {
-    this.setState({
-      notes: [...this.state.notes, note]
-    });
+     fetch(`${notesURL}`,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'},
+        body:JSON.stringify(note)
+    })
+    .then(res=>res.json())
+    .then(jsonData=>this.setState({notes:jsonData}))
+    
   }
 
   addFolder = async (folder) => {
@@ -114,7 +120,8 @@ class App extends React.Component {
         <PageContext.Provider value={{
           notes: this.state.notes,
           deleteNote: this.deleteNote,
-          addFolder: this.addFolder
+          addFolder: this.addFolder,
+          addNote:this.addNote
         }}>
           <Main>
             <Switch>
