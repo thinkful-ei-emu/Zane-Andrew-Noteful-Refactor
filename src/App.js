@@ -42,41 +42,46 @@ class App extends React.Component {
     });
   }
 
-  componentDidMount() {
-    let folderResponse = fetch('http://localhost:9090/folders')
-    let noteResponse = fetch('http://localhost:9090/notes')
-    Promise.all([folderResponse, noteResponse])
-      .then(arr => arr.map(response => response.json()))
-      .then(jsonArr => {
-        this.setState({
-        folders: jsonArr[0],
-        notes: jsonArr[1]
-      })
-      console.log(jsonArr[0])
-    })
-      
+  async componentDidMount() {
+    let folderResponse = fetch('http://localhost:9090/folders');
+    let noteResponse = fetch('http://localhost:9090/notes');
+
+    // [folderResponse, noteResponse] = await Promise.all([folderResponse, noteResponse]);
+    // const [folderFetch, noteFetch] = await Promise.all([folderResponse.json(), noteResponse.json()]);
+    // this.setState({
+    //   folders: folderFetch,
+    //   notes: noteFetch
+    // });
+    // console.log(folderFetch);
+    // console.log(noteFetch);
+
+    Promise.all([
+      folderResponse,
+      noteResponse
+    ])
+      .then(([folderRes, noteRes]) => [
+        folderRes.json().then(folders => {
+          console.log(folders);
+          this.setState({
+            folders
+          })
+        }),
+        noteRes.json().then(notes => {
+          console.log(notes);
+          this.setState({
+            notes
+          })
+        })
+      ])
   }
 
+  render() {
+    return (
+      <div>
 
-  //     [folderResponse,noteResponse]=await Promise.all([folderResponse, noteResponse])
-  //     const [folderFetch, noteFetch] = await Promise.all([folderResponse.json(), noteResponse.json()])
-  //     this.setState({
-  //       folders: folderFetch,
-  //       notes: noteFetch
-  //     })
-  // console.log(folderFetch);
-  // console.log(noteFetch);
-
-
-
-
-render(){
-  return(
-    <div>
-
-    </div>
-  )
-}
+      </div>
+    )
+  }
   // render() {
   //   return (
   //     <div className="App">
