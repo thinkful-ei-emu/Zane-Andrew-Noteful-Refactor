@@ -6,9 +6,10 @@ class MainPage extends React.Component {
   render() {
     return (
       <div>
-        <NoteList notes={this.props.notes} />
+        <NoteList />
       </div>);
   }
 }
+
 
 export default MainPage;

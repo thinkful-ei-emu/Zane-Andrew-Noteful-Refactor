@@ -1,15 +1,21 @@
 import React from 'react';
 import NoteThumbnail from './note-thumbnail';
+import { PageContext } from './Contexts/PageContext';
 
 class FolderPage extends React.Component {
-  
+
+  static contextType = PageContext;
+
   render() {
+
+    const { notes } = this.context;
+
     const folderId = this.props.match.params.folderId;
-    const filteredNotes = this.props.notes.filter(note => {
-      return note.folderId===folderId;
+    const filteredNotes = notes.filter(note => {
+      return note.folderId === folderId;
     });
 
-    const notes = filteredNotes.map(note => {
+    const mappedNotes = filteredNotes.map(note => {
       return (
         <NoteThumbnail
           key={note.id}
@@ -19,7 +25,7 @@ class FolderPage extends React.Component {
         />
       );
     });
-    return <div>{notes.length ? notes : 'Nothing was Found.'}</div>;
+    return <div>{notes.length ? mappedNotes : 'Nothing was Found.'}</div>;
   }
 }
 

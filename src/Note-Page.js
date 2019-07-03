@@ -1,29 +1,38 @@
 import React from 'react';
+import { PageContext } from './Contexts/PageContext';
 
-function NotePage(props) {
-  const noteId = props.match.params.noteId;
-  const note = props.notes.find(note => note.id === noteId);
-  console.log('history', props.history);
-  return (
-    <div className='note-stuff'>
-      {note ?
-        <>
-          <header>
-            <h2>
-              {note.name}
-            </h2>
+class NotePage extends React.Component {
+
+  static contextType = PageContext;
+
+  render() {
+
+    const { notes } = this.context;
+
+    const noteId = this.props.match.params.noteId;
+    const note = notes.find(note => note.id === noteId);
+    console.log('history', this.props.history);
+    return (
+      <div className='note-stuff'>
+        {note ?
+          <>
+            <header>
+              <h2>
+                {note.name}
+              </h2>
+              <p>
+                {new Date(note.modified).toLocaleDateString()}
+              </p>
+              <button>Delete Note</button>
+            </header>
             <p>
-              {new Date(note.modified).toLocaleDateString()}
+              {note.content}
             </p>
-            <button>Delete Note</button>
-          </header>
-          <p>
-            {note.content}
-          </p>
-        </> :
-        'Nothing was Found.'
-      }
-    </div>);
+          </> :
+          'Nothing was Found.'
+        }
+      </div>);
+  }
 }
 
 export default NotePage;

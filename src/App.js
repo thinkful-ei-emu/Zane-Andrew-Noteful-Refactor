@@ -11,6 +11,8 @@ import FolderPage from './Folder-Page';
 import Main from './Main';
 import Sidebar from './Sidebar';
 import NotFound from './Not-Found';
+import { SidebarContext } from './Contexts/SidebarContext';
+import { PageContext } from './Contexts/PageContext';
 
 class App extends React.Component {
   constructor(props) {
@@ -22,9 +24,21 @@ class App extends React.Component {
     };
   }
 
-  setCurrentFolder = (folderId) => {
+  setCurrentFolder = (currentFolder) => {
     this.setState({
-      currentFolder: folderId
+      currentFolder
+    });
+  }
+
+  addNote = (note) => {
+    this.setState({
+      notes: [...this.state.notes, note]
+    });
+  }
+
+  addFolder = (folder) => {
+    this.setState({
+      folders: [...this.state.folders, folder]
     });
   }
 
@@ -32,54 +46,55 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        <Sidebar>
-          <Switch>
-            <Route path='/note/:noteId' render={({ history }) => {
-              return <NoteSidebar
-                history={history} />
-            }} />
-            <Route path='/'
-              render={() => {
-                return (
-                  <MainSidebar
-                    setCurrentFolder={this.setCurrentFolder}
-                    folders={this.state.folders}
-                  />
-                );
-              }} />
-          </Switch>
-        </Sidebar>
-        <Main>
-          <Switch>
-            <Route path='/note/:noteId'
-              render={({ match, history }) => {
-                return <NotePage
-                  match={match}
-                  history={history}
-                  notes={this.state.notes}
-                />;
-              }}
-            />
-            <Route path='/folder/:folderId'
-              render={({ match }) => {
-                return <FolderPage
-                  match={match}
-                  folders={this.state.folders}
-                  notes={this.state.notes} />
-              }}
-            />
-            <Route exact path='/'
-              render={() => {
-                return <MainPage
-                  notes={this.state.notes}
-                  folders={this.state.folders}
-                />
-              }}
-            />
-            <Route component={NotFound} />
-          </Switch>
-        </Main>
 
+        <SidebarContext.Provider value={{
+          folders: this.state.folders,
+          setCurrentFolder: this.setCurrentFolder
+        }}>
+          <Sidebar>
+            <Switch>
+              <Route path='/note/:noteId'
+                render={({ history }) => {
+                  return <NoteSidebar
+                    history={history} />
+                }}
+              />
+              <Route path='/'
+                component={MainSidebar}
+              />
+            </Switch>
+          </Sidebar>
+        </SidebarContext.Provider>
+
+        <PageContext.Provider value={{
+          notes: this.state.notes,
+        }}>
+          <Main>
+            <Switch>
+              <Route path='/note/:noteId'
+                render={({ match, history }) => {
+                  return <NotePage
+                    match={match}
+                    history={history}
+                  />;
+                }}
+              />
+              <Route path='/folder/:folderId'
+                render={({ match }) => {
+                  return <FolderPage
+                    match={match}
+                  />
+                }}
+              />
+              <Route exact path='/'
+                render={() => {
+                  return <MainPage />
+                }}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </Main>
+        </PageContext.Provider>
       </div>
     );
   }
