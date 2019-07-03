@@ -18,8 +18,8 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      folders: Store.folders,
-      notes: Store.notes,
+      folders: [],
+      notes: [],
       currentFolder: ''
     };
   }
@@ -42,62 +42,97 @@ class App extends React.Component {
     });
   }
 
-  render() {
-    return (
-      <div className="App">
-        <Header />
-
-        <SidebarContext.Provider value={{
-          folders: this.state.folders,
-          setCurrentFolder: this.setCurrentFolder
-        }}>
-          <Sidebar>
-            <Switch>
-              <Route path='/note/:noteId'
-                render={({ history }) => {
-                  return <NoteSidebar
-                    history={history} />
-                }}
-              />
-              <Route path='/'
-                component={MainSidebar}
-              />
-            </Switch>
-          </Sidebar>
-        </SidebarContext.Provider>
-
-        <PageContext.Provider value={{
-          notes: this.state.notes,
-        }}>
-          <Main>
-            <Switch>
-              <Route path='/note/:noteId'
-                render={({ match, history }) => {
-                  return <NotePage
-                    match={match}
-                    history={history}
-                  />;
-                }}
-              />
-              <Route path='/folder/:folderId'
-                render={({ match }) => {
-                  return <FolderPage
-                    match={match}
-                  />
-                }}
-              />
-              <Route exact path='/'
-                render={() => {
-                  return <MainPage />
-                }}
-              />
-              <Route component={NotFound} />
-            </Switch>
-          </Main>
-        </PageContext.Provider>
-      </div>
-    );
+  componentDidMount() {
+    let folderResponse = fetch('http://localhost:9090/folders')
+    let noteResponse = fetch('http://localhost:9090/notes')
+    Promise.all([folderResponse, noteResponse])
+      .then(arr => arr.map(response => response.json()))
+      .then(jsonArr => {
+        this.setState({
+        folders: jsonArr[0],
+        notes: jsonArr[1]
+      })
+      console.log(jsonArr[0])
+    })
+      
   }
+
+
+  //     [folderResponse,noteResponse]=await Promise.all([folderResponse, noteResponse])
+  //     const [folderFetch, noteFetch] = await Promise.all([folderResponse.json(), noteResponse.json()])
+  //     this.setState({
+  //       folders: folderFetch,
+  //       notes: noteFetch
+  //     })
+  // console.log(folderFetch);
+  // console.log(noteFetch);
+
+
+
+
+render(){
+  return(
+    <div>
+
+    </div>
+  )
+}
+  // render() {
+  //   return (
+  //     <div className="App">
+  //       <Header />
+
+  //       <SidebarContext.Provider value={{
+  //         folders: this.state.folders,
+  //         setCurrentFolder: this.setCurrentFolder
+  //       }}>
+  //         <Sidebar>
+  //           <Switch>
+  //             <Route path='/note/:noteId'
+  //               render={({ history }) => {
+  //                 return <NoteSidebar
+  //                   history={history} />
+  //               }}
+  //             />
+  //             <Route path='/'
+  //               component={MainSidebar}
+  //             />
+  //           </Switch>
+  //         </Sidebar>
+  //       </SidebarContext.Provider>
+
+  //       <PageContext.Provider value={{
+  //         notes: this.state.notes,
+  //       }}>
+  //         <Main>
+  //           <Switch>
+  //             <Route path='/note/:noteId'
+  //               render={({ match, history }) => {
+  //                 return <NotePage
+  //                   match={match}
+  //                   history={history}
+  //                 />;
+  //               }}
+  //             />
+  //             <Route path='/folder/:folderId'
+  //               render={({ match }) => {
+  //                 return <FolderPage
+  //                   match={match}
+  //                 />
+  //               }}
+  //             />
+  //             <Route exact path='/'
+  //               render={() => {
+  //                 return <MainPage />
+  //               }}
+  //             />
+  //             <Route component={NotFound} />
+  //           </Switch>
+  //         </Main>
+  //       </PageContext.Provider>
+  //     </div>
+  //   );
+  // }
 }
 
 export default App;
