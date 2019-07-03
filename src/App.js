@@ -12,8 +12,14 @@ import Sidebar from './Sidebar';
 import NotFound from './Not-Found';
 import { SidebarContext } from './Contexts/SidebarContext';
 import { PageContext } from './Contexts/PageContext';
-const notesURL='http://localhost:9090/notes';
-const foldersURL='http://localhost:9090/folders';
+import AddFolderForm from './AddFolderForm';
+import AddNoteForm from './AddNoteForm';
+
+
+const notesURL = 'http://localhost:9090/notes';
+const foldersURL = 'http://localhost:9090/folders';
+
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +27,7 @@ class App extends React.Component {
       folders: [],
       notes: [],
       currentFolder: '',
-      
+
     };
   }
 
@@ -37,19 +43,32 @@ class App extends React.Component {
     });
   }
 
-  addFolder = (folder) => {
+  addFolder = async (folder) => {
+    await fetch(`${foldersURL}`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(folder)
+    });
+
+    let folders = await fetch(`${foldersURL}`);
+    folders = await folders.json();
+
+    console.log(folders);
+    // console.log(newFolder);
     this.setState({
-      folders: [...this.state.folders, folder]
+      folders
     });
   }
 
-  deleteNote=(noteId)=>{
+  deleteNote = (noteId) => {
     this.setState(
-      {notes:this.state.notes.filter(note=>note.id!==noteId)}      
+      { notes: this.state.notes.filter(note => note.id !== noteId) }
     )
-    fetch(`${notesURL}/${noteId}`,{
-      method:'DELETE',
-      
+    fetch(`${notesURL}/${noteId}`, {
+      method: 'DELETE',
+
     })
   }
 
@@ -65,24 +84,6 @@ class App extends React.Component {
       notes
     });
 
-    // Promise.all([
-    //   folderResponse,
-    //   noteResponse
-    // ])
-    //   .then(([folderRes, noteRes]) => [
-    //     folderRes.json().then(folders => {
-    //       console.log(folders);
-    //       this.setState({
-    //         folders
-    //       })
-    //     }),
-    //     noteRes.json().then(notes => {
-    //       console.log(notes);
-    //       this.setState({
-    //         notes
-    //       })
-    //     })
-    //   ])
   }
 
   render() {
@@ -93,7 +94,7 @@ class App extends React.Component {
         <SidebarContext.Provider value={{
           folders: this.state.folders,
           setCurrentFolder: this.setCurrentFolder,
-          
+
         }}>
           <Sidebar>
             <Switch>
@@ -112,7 +113,8 @@ class App extends React.Component {
 
         <PageContext.Provider value={{
           notes: this.state.notes,
-          deleteNote:this.deleteNote
+          deleteNote: this.deleteNote,
+          addFolder: this.addFolder
         }}>
           <Main>
             <Switch>
@@ -124,10 +126,25 @@ class App extends React.Component {
                   />;
                 }}
               />
-              <Route path='/folder/:folderId'
+              <Route exact path='/folder/:folderId'
                 render={({ match }) => {
                   return <FolderPage
                     match={match}
+                  />
+                }}
+              />
+              <Route path='/folder/:folderId/add-note'
+                render={({ match, history }) => {
+                  return <AddNoteForm
+                    match={match}
+                    history={history}
+                  />
+                }}
+              />
+              <Route path='/add-folder'
+                render={({ history }) => {
+                  return <AddFolderForm
+                    history={history}
                   />
                 }}
               />

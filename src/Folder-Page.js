@@ -1,6 +1,7 @@
 import React from 'react';
 import NoteThumbnail from './note-thumbnail';
 import { PageContext } from './Contexts/PageContext';
+import {Link} from 'react-router-dom';
 
 class FolderPage extends React.Component {
 
@@ -25,7 +26,12 @@ class FolderPage extends React.Component {
         />
       );
     });
-    return <div>{notes.length ? mappedNotes : 'Nothing was Found.'}</div>;
+    return <div>
+      <Link to={`/folder/${folderId}/add-note`}>
+        <button>Add Note</button>
+      </Link>
+      {notes.length ? mappedNotes : 'Nothing was Found.'}
+    </div>;
   }
 }
 
