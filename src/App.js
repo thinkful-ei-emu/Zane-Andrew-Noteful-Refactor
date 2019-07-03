@@ -1,7 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
-import Store from './store';
 import Header from './Header';
 import MainPage from './Main-Page';
 import NotePage from './Note-Page';
@@ -46,98 +45,90 @@ class App extends React.Component {
     let folderResponse = fetch('http://localhost:9090/folders');
     let noteResponse = fetch('http://localhost:9090/notes');
 
-    // [folderResponse, noteResponse] = await Promise.all([folderResponse, noteResponse]);
-    // const [folderFetch, noteFetch] = await Promise.all([folderResponse.json(), noteResponse.json()]);
-    // this.setState({
-    //   folders: folderFetch,
-    //   notes: noteFetch
-    // });
-    // console.log(folderFetch);
-    // console.log(noteFetch);
+    [folderResponse, noteResponse] = await Promise.all([folderResponse, noteResponse]);
+    const [folders, notes] = await Promise.all([folderResponse.json(), noteResponse.json()]);
 
-    Promise.all([
-      folderResponse,
-      noteResponse
-    ])
-      .then(([folderRes, noteRes]) => [
-        folderRes.json().then(folders => {
-          console.log(folders);
-          this.setState({
-            folders
-          })
-        }),
-        noteRes.json().then(notes => {
-          console.log(notes);
-          this.setState({
-            notes
-          })
-        })
-      ])
+    this.setState({
+      folders,
+      notes
+    });
+
+    // Promise.all([
+    //   folderResponse,
+    //   noteResponse
+    // ])
+    //   .then(([folderRes, noteRes]) => [
+    //     folderRes.json().then(folders => {
+    //       console.log(folders);
+    //       this.setState({
+    //         folders
+    //       })
+    //     }),
+    //     noteRes.json().then(notes => {
+    //       console.log(notes);
+    //       this.setState({
+    //         notes
+    //       })
+    //     })
+    //   ])
   }
 
   render() {
     return (
-      <div>
+      <div className="App">
+        <Header />
 
+        <SidebarContext.Provider value={{
+          folders: this.state.folders,
+          setCurrentFolder: this.setCurrentFolder
+        }}>
+          <Sidebar>
+            <Switch>
+              <Route path='/note/:noteId'
+                render={({ history }) => {
+                  return <NoteSidebar
+                    history={history} />
+                }}
+              />
+              <Route path='/'
+                component={MainSidebar}
+              />
+            </Switch>
+          </Sidebar>
+        </SidebarContext.Provider>
+
+        <PageContext.Provider value={{
+          notes: this.state.notes,
+        }}>
+          <Main>
+            <Switch>
+              <Route path='/note/:noteId'
+                render={({ match, history }) => {
+                  return <NotePage
+                    match={match}
+                    history={history}
+                  />;
+                }}
+              />
+              <Route path='/folder/:folderId'
+                render={({ match }) => {
+                  return <FolderPage
+                    match={match}
+                  />
+                }}
+              />
+              <Route exact path='/'
+                render={() => {
+                  return <MainPage />
+                }}
+              />
+              <Route component={NotFound} />
+            </Switch>
+          </Main>
+        </PageContext.Provider>
       </div>
-    )
+    );
   }
-  // render() {
-  //   return (
-  //     <div className="App">
-  //       <Header />
-
-  //       <SidebarContext.Provider value={{
-  //         folders: this.state.folders,
-  //         setCurrentFolder: this.setCurrentFolder
-  //       }}>
-  //         <Sidebar>
-  //           <Switch>
-  //             <Route path='/note/:noteId'
-  //               render={({ history }) => {
-  //                 return <NoteSidebar
-  //                   history={history} />
-  //               }}
-  //             />
-  //             <Route path='/'
-  //               component={MainSidebar}
-  //             />
-  //           </Switch>
-  //         </Sidebar>
-  //       </SidebarContext.Provider>
-
-  //       <PageContext.Provider value={{
-  //         notes: this.state.notes,
-  //       }}>
-  //         <Main>
-  //           <Switch>
-  //             <Route path='/note/:noteId'
-  //               render={({ match, history }) => {
-  //                 return <NotePage
-  //                   match={match}
-  //                   history={history}
-  //                 />;
-  //               }}
-  //             />
-  //             <Route path='/folder/:folderId'
-  //               render={({ match }) => {
-  //                 return <FolderPage
-  //                   match={match}
-  //                 />
-  //               }}
-  //             />
-  //             <Route exact path='/'
-  //               render={() => {
-  //                 return <MainPage />
-  //               }}
-  //             />
-  //             <Route component={NotFound} />
-  //           </Switch>
-  //         </Main>
-  //       </PageContext.Provider>
-  //     </div>
-  //   );
-  // }
 }
 
 export default App;
