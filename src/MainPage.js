@@ -1,5 +1,5 @@
 import React from 'react';
-import NoteList from './note-list';
+import NoteList from './NoteList';
 import { Link } from 'react-router-dom';
 
 class MainPage extends React.Component {

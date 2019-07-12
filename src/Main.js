@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function Main(props) {
   return (
@@ -6,6 +7,10 @@ function Main(props) {
       {props.children}
     </div>
   )
+}
+
+Main.propTypes={
+  children:PropTypes.object,
 }
 
 export default Main;

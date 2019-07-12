@@ -1,5 +1,5 @@
 import React from 'react';
-import NoteThumbnail from './note-thumbnail';
+import NoteThumbnail from './NoteThumbnail';
 import { PageContext } from './Contexts/PageContext';
 import {Link}from 'react-router-dom';
 
