@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {PageContext}from './Contexts/PageContext'
+import PropTypes from 'prop-types';
 
 class NoteThumbnail extends React.Component {
   static contextType=PageContext;
@@ -18,6 +19,12 @@ class NoteThumbnail extends React.Component {
         
       </div>);
   }
+}
+
+NoteThumbnail.propTypes={
+  noteId:PropTypes.string.isRequired,
+  modified:PropTypes.number.isRequired,
+  name:PropTypes.string.isRequired,
 }
 
 export default NoteThumbnail;

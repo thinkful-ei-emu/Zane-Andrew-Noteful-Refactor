@@ -45,7 +45,7 @@ class App extends React.Component {
         body:JSON.stringify(note)
     })
     .then(res=>res.json())
-    .then(jsonData=>this.setState({notes:jsonData}))
+    .then(jsonData=>this.setState({notes:[...this.state.notes,jsonData]}))
     
   }
 
@@ -119,6 +119,7 @@ class App extends React.Component {
 
         <PageContext.Provider value={{
           notes: this.state.notes,
+          folders:this.state.folders,
           deleteNote: this.deleteNote,
           addFolder: this.addFolder,
           addNote:this.addNote

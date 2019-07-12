@@ -1,6 +1,7 @@
 import React from 'react';
 import NoteThumbnail from './note-thumbnail';
 import { PageContext } from './Contexts/PageContext';
+import {Link}from 'react-router-dom';
 
 
 class NoteList extends React.Component {
@@ -22,6 +23,9 @@ class NoteList extends React.Component {
     return (
       <div>
         {allNotes}
+        <Link to='/folder/:folderId/add-note'>
+          <button>Add Note</button>
+        </Link>
       </div>
     );
   }

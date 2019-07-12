@@ -1,6 +1,7 @@
 import React from 'react';
 import { PageContext } from './Contexts/PageContext';
 
+
 class NotePage extends React.Component {
 
   static contextType = PageContext;
@@ -34,6 +35,9 @@ class NotePage extends React.Component {
         }
       </div>);
   }
+}
+NotePage.propTypes={
+
 }
 
 export default NotePage;
