@@ -16,8 +16,8 @@ import AddFolderForm from './AddFolderForm';
 import AddNoteForm from './AddNoteForm';
 
 
-const notesURL = 'http://localhost:9090/notes';
-const foldersURL = 'http://localhost:9090/folders';
+const notesURL = 'http://localhost:8000/api/notes';
+const foldersURL = 'http://localhost:8000/api/folders';
 
 
 class App extends React.Component {
@@ -61,8 +61,7 @@ class App extends React.Component {
     let folders = await fetch(`${foldersURL}`);
     folders = await folders.json();
 
-    console.log(folders);
-    // console.log(newFolder);
+   
     this.setState({
       folders
     });

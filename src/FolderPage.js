@@ -13,7 +13,7 @@ class FolderPage extends React.Component {
 
     const folderId = this.props.match.params.folderId;
     const filteredNotes = notes.filter(note => {
-      return note.folderId === folderId;
+      return note.folder_id == folderId;
     });
 
     const mappedNotes = filteredNotes.map(note => {
@@ -21,8 +21,8 @@ class FolderPage extends React.Component {
         <NoteThumbnail
           key={note.id}
           noteId={note.id}
-          modified={note.modified}
-          name={note.name}
+          modified={note.modified_date}
+          name={note.note_name}
         />
       );
     });

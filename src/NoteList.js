@@ -15,8 +15,8 @@ class NoteList extends React.Component {
       return (<NoteThumbnail
         key={note.id}
         noteId={note.id}
-        modified={note.modified}
-        name={note.name}
+        modified={note.modified_date}
+        name={note.note_name}
       />);
     });
 

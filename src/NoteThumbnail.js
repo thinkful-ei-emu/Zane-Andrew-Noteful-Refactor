@@ -22,8 +22,8 @@ class NoteThumbnail extends React.Component {
 }
 
 NoteThumbnail.propTypes={
-  noteId:PropTypes.string.isRequired,
-  modified:PropTypes.number.isRequired,
+  noteId:PropTypes.number.isRequired,
+  
   name:PropTypes.string.isRequired,
 }
 

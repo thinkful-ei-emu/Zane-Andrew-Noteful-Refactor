@@ -14,7 +14,7 @@ class MainSidebar extends React.Component {
         <NavLink key={folder.id}
           to={`/folder/${folder.id}`}
           onClick={() => setCurrentFolder(folder.id)}>
-          <p>{folder.name}</p>
+          <p>{folder.folder_name}</p>
         </NavLink>
       );
     });

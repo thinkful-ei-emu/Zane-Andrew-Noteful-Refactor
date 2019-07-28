@@ -12,7 +12,7 @@ class AddFolderForm extends React.Component {
     const { addFolder } = this.context;
 
     addFolder({
-      name: folderName.value
+      folder_name: folderName.value
     });
 
     folderName.value = '';

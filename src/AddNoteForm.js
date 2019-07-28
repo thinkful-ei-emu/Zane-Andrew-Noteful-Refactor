@@ -17,10 +17,10 @@ class AddNoteForm extends React.Component {
     
 
     addNote({
-      name: getNoteName.value,
-      content: getContent.value,
-      modified,
-      folderId:getSelector.value,
+      note_name: getNoteName.value,
+      description: getContent.value,
+      
+      folder_id:getSelector.value,
     });
     this.props.history.push("/");
   };
@@ -38,7 +38,7 @@ class AddNoteForm extends React.Component {
             Submit
           </button>
           <select className="selector" id="selection-id">
-          {folders.map(folder => ( <option key={folder.id} value={folder.id}>{folder.name}</option> ))}
+          {folders.map(folder => ( <option key={folder.id} value={folder.id}>{folder.folder_name}</option> ))}
           </select>
         </form>
       </div>
