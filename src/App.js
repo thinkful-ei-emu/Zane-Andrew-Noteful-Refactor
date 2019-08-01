@@ -14,10 +14,11 @@ import { SidebarContext } from './Contexts/SidebarContext';
 import { PageContext } from './Contexts/PageContext';
 import AddFolderForm from './AddFolderForm';
 import AddNoteForm from './AddNoteForm';
+import API_URL from './config';
 
 
-const notesURL = 'http://localhost:8000/api/notes';
-const foldersURL = 'http://localhost:8000/api/folders';
+const notesURL = API_URL.API_NOTES;
+const foldersURL = API_URL.API_FOLDERS;
 
 
 class App extends React.Component {
@@ -68,13 +69,13 @@ class App extends React.Component {
   }
 
   deleteNote = (noteId) => {
-    this.setState(
-      { notes: this.state.notes.filter(note => note.id !== noteId) }
-    )
+    // this.setState(
+    //   { notes: this.state.notes.filter(note => note.id !== noteId) }
+    // )
     fetch(`${notesURL}/${noteId}`, {
       method: 'DELETE',
 
-    })
+    }).then(this.setState({notes:this.state.notes.filter(note=>note.id!==noteId)}))
   }
 
   async componentDidMount() {

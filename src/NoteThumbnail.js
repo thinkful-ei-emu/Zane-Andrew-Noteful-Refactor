@@ -8,6 +8,7 @@ class NoteThumbnail extends React.Component {
   
   
   render() {
+    console.log(this.props.noteId)
     const {deleteNote}=this.context;
     return (
       <div>
@@ -16,10 +17,13 @@ class NoteThumbnail extends React.Component {
           <p>Modified on: {new Date(this.props.modified).toLocaleDateString()}</p>
           </Link>
           <button onClick={()=>{deleteNote(this.props.noteId);}}>Delete Note</button>
+
         
       </div>);
   }
 }
+
+
 
 NoteThumbnail.propTypes={
   noteId:PropTypes.number.isRequired,

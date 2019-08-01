@@ -31,9 +31,9 @@ class AddNoteForm extends React.Component {
       <div>
         <form onSubmit={this.addNoteSubmit}>
           <label htmlFor="name-input">Enter Name</label>
-          <input id="name-input" placeholder="Enter Name" type="text" />
+          <input id="name-input" placeholder="Enter Name" type="text" minlength="3" required />
           <label htmlFor="content-input">Enter Note</label>
-          <textarea id="content-input" placeholder="Enter Content Here" />
+          <textarea id="content-input" placeholder="Enter Content Here" minlength="1" required />
           <button type="submit" className="submit-button">
             Submit
           </button>
